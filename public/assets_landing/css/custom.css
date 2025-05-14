@@ -1,0 +1,148 @@
+
+.btn-grad {
+	background-image: linear-gradient(to right, #F09819 0%, #EDDE5D 51%, #F09819 100%)
+}
+
+.btn-grad {
+	margin: 10px;
+	padding: 15px 45px;
+	text-align: center;
+	text-transform: uppercase;
+	transition: 0.5s;
+	background-size: 200% auto;
+	color: black;
+	box-shadow: 0 0 20px #eee;
+	border-radius: 10px;
+	display: block; 
+}
+
+.btn-grad:hover {
+	background-position: right center;
+	/* change the direction of the change here */
+	color: red;
+	text-decoration: none;
+}
+
+html .bg-color-hover-blue:hover,
+html .bg-hover-blue:hover {
+	background-color: blue !important;
+}
+
+html .bg-color-after-blue:after {
+	background-color: blue !important;
+}
+
+html .bg-color-hover-after-blue:after:hover {
+	background-color: blue !important;
+}
+
+html .bg-color-before-blue:before {
+	background-color: blue !important;
+}
+
+html .bg-color-hover-before-blue:before:hover {
+	background-color: blue !important;
+}
+
+.bg-after-abu {
+	background-color: #e6e6e6 !important;
+}
+.bg-after-abu:after {
+	background-color: #e6e6e6 !important;
+}
+
+.blink_me {
+	animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+	50% {
+		opacity: 0;
+	}
+}
+
+
+.label-slider-depan {
+	font-weight: bold !important;
+	text-shadow: none; 
+	z-index: 5;  
+	/*background-color: #C10C19; */
+	/*background-color: rgb(242, 49, 64, 0.6);*/
+	background-color: rgb(255, 0, 0, 0.6);
+	padding: 20px 80px 20px 80px !important;  
+	font-family: Arial, Helvetica, sans-serif !important;
+	/*font-size: 35px !important;*/
+}
+
+.hamdifont-arial {
+	font-family: Arial, Helvetica, sans-serif !important;
+}
+
+.btn-putih {
+	background-color: white;
+} 
+
+.logo-2 {
+	display: block;  
+}
+.logo-2 img { 
+	width: 350px !important;
+}
+
+.judul-vertical {
+	font-weight: bold;
+	font-size: 43pt;
+	color: red;
+	-webkit-transform: rotate(-90deg);   
+	-moz-transform: rotate(-90deg);
+	-ms-transform: rotate(-90deg);
+	-o-transform: rotate(-90deg);
+	transform: rotate(-90deg);
+}
+
+@media screen and (max-width: 1125px) {  
+	.logo-2 img { 
+		width: 250px !important;
+	}
+
+	.judul-vertical {
+		font-weight: bold;
+		font-size: 43pt;
+		color: red;
+		-webkit-transform: rotate(0deg);   
+		-moz-transform: rotate(0deg);
+		-ms-transform: rotate(0deg);
+		-o-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+}
+
+@media screen and (max-width: 522px) { 
+	.logo-2 {
+		display: none
+	}
+}
+
+ 
+.btn-grad-create {
+	background-image: linear-gradient(to right, #4776E6 0%, #8E54E9 51%, #4776E6 100%)
+}
+
+.btn-grad-create {
+	margin: 10px;
+	padding: 15px 45px;
+	text-align: center; 
+	transition: 0.5s;
+	background-size: 200% auto;
+	color: white;
+	box-shadow: 0 0 20px #eee;
+	border-radius: 10px;
+	display: block;
+}
+
+.btn-grad-create:hover {
+	background-position: right center;
+	/* change the direction of the change here */
+	color: #fff;
+	text-decoration: none;
+}

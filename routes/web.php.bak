@@ -1,0 +1,421 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
+|
+*/
+Route::get('/', 'PublicController@index');
+Route::get('/bankdata', 'PublicController@home');
+Route::get('/beranda', 'PublicController@index')->name('beranda');
+Route::get('/berandapage', 'PublicController@berandapage')->name('berandapage');
+Route::get('/berita_page/{page}', 'PublicController@berita_page')->name('berita_page');
+Route::get('/detail_berita','PublicController@detail_berita')->name('detail_berita');
+Route::get('/logouted', 'Auth\LoginController@logout');
+Route::get('/logout', 'Auth\LoginController@logout');
+Route::post('connect_with_us', 'PublicController@connect_with_us')->name('connect_with_us');
+Route::get('/s/{tipe}', 'PublicController@search')->name('search');
+Route::get('/d/{tipe}', 'PublicController@search_detail')->name('search.detail');
+Route::get('/tentang_kami', 'PublicController@tentang_kami')->name('tentang_kami');
+Route::get('/register','PublicController@register_akun')->name('register_akun');
+Route::post('/register/simpan_register','PublicController@simpan_register')->name('simpan_register');
+
+Auth::routes();
+Route::group(['middleware' => 'auth'], function () {
+
+	Route::get('/home', 'HomeController@index')->name('home');  
+	Route::get('/home_dashboard', 'HomeController@dashboard')->name('home_dashboard');  
+
+	// START MY-PROFILE
+	Route::get('admin/myprofile', 'ProfileController@my_profile');
+	Route::post('/admin/myprofile/{id}/ganti_username_email_admin', 'ProfileController@ganti_username_email_admin')->name('simpan_ganti_username_email_admin');
+	Route::post('/admin/myprofile/{id}/ganti_password_admin', 'ProfileController@ganti_password_admin')->name('simpan_ganti_password_admin');
+	// END MY-PROFILE
+
+	//START MASTER USER
+	Route::get('/admin/master_user', 'ProfileController@master_user')->name('master_user');
+	Route::post('/admin/detail_user', 'ProfileController@detail_user')->name('detail_user');
+	Route::post('/admin/master_user/tambah_modal_master_user', 'ProfileController@tambah_modal_master_user');
+	Route::post('/admin/master_user/simpan_master_user', 'ProfileController@simpan_master_user')->name('simpan_master_user');
+	Route::post('master_user/{id}/hapus', 'ProfileController@destroy');
+	// END MASTER USER
+
+	//START GRAFIK
+	Route::post('/admin/grafik_paten', 'GrafikController@grafik_paten')->name('grafik_paten');
+	Route::post('/admin/grafik_cipta', 'GrafikController@grafik_cipta')->name('grafik_cipta'); 
+	//END GRAFIK
+
+	// START TIPE 
+	Route::get('/admin/tipe', 'TipeController@index')->name('tipe');
+	Route::post('/admin/tipe/tambah_modal_tipe', 'TipeController@modal_tambah');
+	Route::post('/admin/tipe/simpan_tipe', 'TipeController@simpan_tipe')->name('simpan_tipe');
+	Route::post('/admin/tipe/ubah', 'TipeController@modal_ubah');
+	Route::post('/admin/tipe/simpan/ubah/{id}', 'TipeController@simpan_tipe_ubah')->name('simpan_tipe_ubah');
+	Route::post('tipe/{id}/hapus', 'TipeController@destroy');
+	// END TIPE
+
+	// START KELAS 
+	Route::get('/admin/kelas', 'KelasController@index')->name('kelas');
+	Route::post('/admin/kelas/tambah_modal_kelas', 'KelasController@modal_tambah');
+	Route::post('/admin/kelas/simpan_kelas', 'KelasController@simpan_kelas')->name('simpan_kelas');
+	Route::post('/admin/kelas/ubah', 'KelasController@modal_ubah');
+	Route::post('/admin/kelas/simpan/ubah/{id}', 'KelasController@simpan_kelas_ubah')->name('simpan_kelas_ubah');
+	Route::post('kelas/{id}/hapus', 'KelasController@destroy');
+	// END KELAS
+
+	// START PRIORITAS MEREK 
+	Route::get('/admin/prioritas_merek', 'PrioritasMerekController@index')->name('prioritas_merek');
+	Route::post('/admin/prioritas_merek/tambah_modal_prioritas_merek', 'PrioritasMerekController@modal_tambah');
+	Route::post('/admin/prioritas_merek/simpan_prioritas_merek', 'PrioritasMerekController@simpan_prioritas_merek')->name('simpan_prioritas_merek');
+	Route::post('/admin/prioritas_merek/ubah', 'PrioritasMerekController@modal_ubah');
+	Route::post('/admin/prioritas_merek/simpan/ubah/{id}', 'PrioritasMerekController@simpan_prioritas_merek_ubah')->name('simpan_prioritas_merek_ubah');
+	Route::post('prioritas_merek/{id}/hapus', 'PrioritasMerekController@destroy');
+	// END PRIORITAS MEREK
+	
+
+	// START PRIORITAS PATEN 
+	Route::get('/admin/prioritas_paten', 'PrioritasPatenController@index')->name('prioritas_paten');
+	Route::post('/admin/prioritas_paten/tambah_modal_prioritas_paten', 'PrioritasPatenController@modal_tambah');
+	Route::post('/admin/prioritas_paten/simpan_prioritas_paten', 'PrioritasPatenController@simpan_prioritas_paten')->name('simpan_prioritas_paten');
+	Route::post('/admin/prioritas_paten/ubah', 'PrioritasPatenController@modal_ubah');
+	Route::post('/admin/prioritas_paten/simpan/ubah/{id}', 'PrioritasPatenController@simpan_prioritas_paten_ubah')->name('simpan_prioritas_paten_ubah');
+	Route::post('prioritas_paten/{id}/hapus', 'PrioritasPatenController@destroy');
+	// END PRIORITAS PATEN
+
+	// START PRIORITAS DESAIN 
+	Route::get('/admin/prioritas_desain', 'PrioritasDesainController@index')->name('prioritas_desain');
+	Route::post('/admin/prioritas_desain/tambah_modal_prioritas_desain', 'PrioritasDesainController@modal_tambah');
+	Route::post('/admin/prioritas_desain/simpan_prioritas_desain', 'PrioritasDesainController@simpan_prioritas_desain')->name('simpan_prioritas_desain');
+	Route::post('/admin/prioritas_desain/ubah', 'PrioritasDesainController@modal_ubah');
+	Route::post('/admin/prioritas_desain/simpan/ubah/{id}', 'PrioritasDesainController@simpan_prioritas_desain_ubah')->name('simpan_prioritas_desain_ubah');
+	Route::post('prioritas_desain/{id}/hapus', 'PrioritasDesainController@destroy');
+	// END PRIORITAS DESAIN
+
+	// START INVENTOR 
+	Route::get('/admin/inventor', 'InventorController@index')->name('inventor');
+	Route::post('/admin/inventor/tambah_modal_inventor', 'InventorController@modal_tambah');
+	Route::post('/admin/inventor/simpan_inventor', 'InventorController@simpan_inventor')->name('simpan_inventor');
+	Route::post('/admin/inventor/ubah', 'InventorController@modal_ubah');
+	Route::post('/admin/inventor/simpan/ubah/{id}', 'InventorController@simpan_inventor_ubah')->name('simpan_inventor_ubah');
+	Route::post('inventor/{id}/hapus', 'InventorController@destroy');
+	// END INVENTOR
+	
+	// START PEMEGANG PATEN 
+	Route::get('/admin/pemegang_paten', 'PemegangPatenController@index')->name('pemegang_paten');
+	Route::post('/admin/pemegang_paten/tambah_modal_pemegang_paten', 'PemegangPatenController@modal_tambah');
+	Route::post('/admin/pemegang_paten/simpan_pemegang_paten', 'PemegangPatenController@simpan_pemegang_paten')->name('simpan_pemegang_paten');
+	Route::post('/admin/pemegang_paten/ubah', 'PemegangPatenController@modal_ubah');
+	Route::post('/admin/pemegang_paten/simpan/ubah/{id}', 'PemegangPatenController@simpan_pemegang_paten_ubah')->name('simpan_pemegang_paten_ubah');
+	Route::post('pemegang_paten/{id}/hapus', 'PemegangPatenController@destroy');
+	// END PEMEGANG PATEN
+
+	// START PEMEGANG CIPTA 
+	Route::get('/admin/pemegang_cipta', 'PemegangCiptaController@index')->name('pemegang_cipta');
+	Route::post('/admin/pemegang_cipta/tambah_modal_pemegang_cipta', 'PemegangCiptaController@modal_tambah');
+	Route::post('/admin/pemegang_cipta/simpan_pemegang_cipta', 'PemegangCiptaController@simpan_pemegang_cipta')->name('simpan_pemegang_cipta');
+	Route::post('/admin/pemegang_cipta/ubah', 'PemegangCiptaController@modal_ubah');
+	Route::post('/admin/pemegang_cipta/simpan/ubah/{id}', 'PemegangCiptaController@simpan_pemegang_cipta_ubah')->name('simpan_pemegang_cipta_ubah');
+	Route::post('pemegang_cipta/{id}/hapus', 'PemegangCiptaController@destroy');
+	// END PEMEGANG CIPTA
+
+
+	// START PEMEGANG DESAIN INDUSTRI 
+	Route::get('/admin/pemegang_desain', 'PemegangDesainController@index')->name('pemegang_desain');
+	Route::post('/admin/pemegang_desain/tambah_modal_pemegang_desain', 'PemegangDesainController@modal_tambah');
+	Route::post('/admin/pemegang_desain/simpan_pemegang_desain', 'PemegangDesainController@simpan_pemegang_desain')->name('simpan_pemegang_desain');
+	Route::post('/admin/pemegang_desain/ubah', 'PemegangDesainController@modal_ubah');
+	Route::post('/admin/pemegang_desain/simpan/ubah/{id}', 'PemegangDesainController@simpan_pemegang_desain_ubah')->name('simpan_pemegang_desain_ubah');
+	Route::post('pemegang_desain/{id}/hapus', 'PemegangDesainController@destroy');
+	// END PEMEGANG DESAIN INDUSTRI 
+
+	// START PENCIPTA 
+	Route::get('/admin/pencipta', 'PenciptaController@index')->name('pencipta');
+	Route::post('/admin/pencipta/tambah_modal_pencipta', 'PenciptaController@modal_tambah');
+	Route::post('/admin/pencipta/simpan_pencipta', 'PenciptaController@simpan_pencipta')->name('simpan_pencipta');
+	Route::post('/admin/pencipta/ubah', 'PenciptaController@modal_ubah');
+	Route::post('/admin/pencipta/simpan/ubah/{id}', 'PenciptaController@simpan_pencipta_ubah')->name('simpan_pencipta_ubah');
+	Route::post('pencipta/{id}/hapus', 'PenciptaController@destroy');
+	// END PENCIPTA
+
+	// START KONSULTAN PATEN 
+	Route::get('/admin/konsultan_paten', 'KonsultanPatenController@index')->name('konsultan_paten');
+	Route::post('/admin/konsultan_paten/tambah_modal_konsultan_paten', 'KonsultanPatenController@modal_tambah');
+	Route::post('/admin/konsultan_paten/simpan_konsultan_paten', 'KonsultanPatenController@simpan_konsultan_paten')->name('simpan_konsultan_paten');
+	Route::post('/admin/konsultan_paten/ubah', 'KonsultanPatenController@modal_ubah');
+	Route::post('/admin/konsultan_paten/simpan/ubah/{id}', 'KonsultanPatenController@simpan_konsultan_paten_ubah')->name('simpan_konsultan_paten_ubah');
+	Route::post('konsultan_paten/{id}/hapus', 'KonsultanPatenController@destroy');
+	// END KONSULTAN PATEN  
+
+	// START KONSULTAN MEREK 
+	Route::get('/admin/konsultan_merek', 'KonsultanMerekController@index')->name('konsultan_merek');
+	Route::post('/admin/konsultan_merek/tambah_modal_konsultan_merek', 'KonsultanMerekController@modal_tambah');
+	Route::post('/admin/konsultan_merek/simpan_konsultan_merek', 'KonsultanMerekController@simpan_konsultan_merek')->name('simpan_konsultan_merek');
+	Route::post('/admin/konsultan_merek/ubah', 'KonsultanMerekController@modal_ubah');
+	Route::post('/admin/konsultan_merek/simpan/ubah/{id}', 'KonsultanMerekController@simpan_konsultan_merek_ubah')->name('simpan_konsultan_merek_ubah');
+	Route::post('konsultan_merek/{id}/hapus', 'KonsultanMerekController@destroy');
+	// END KONSULTAN MEREK
+	
+	// START KONSULTAN DESAIN INDUSTRI 
+	Route::get('/admin/konsultan_desain', 'KonsultanDesainController@index')->name('konsultan_desain');
+	Route::post('/admin/konsultan_desain/tambah_modal_konsultan_desain', 'KonsultanDesainController@modal_tambah');
+	Route::post('/admin/konsultan_desain/simpan_konsultan_desain', 'KonsultanDesainController@simpan_konsultan_desain')->name('simpan_konsultan_desain');
+	Route::post('/admin/konsultan_desain/ubah', 'KonsultanDesainController@modal_ubah');
+	Route::post('/admin/konsultan_desain/simpan/ubah/{id}', 'KonsultanDesainController@simpan_konsultan_desain_ubah')->name('simpan_konsultan_desain_ubah');
+	Route::post('konsultan_desain/{id}/hapus', 'KonsultanDesainController@destroy');
+	// END KONSULTAN DESAIN INDUSTRI
+ 
+	// START KONSULTAN CIPTA 
+	Route::get('/admin/konsultan_cipta', 'KonsultanCiptaController@index')->name('konsultan_cipta');
+	Route::post('/admin/konsultan_cipta/tambah_modal_konsultan_cipta', 'KonsultanCiptaController@modal_tambah');
+	Route::post('/admin/konsultan_cipta/simpan_konsultan_cipta', 'KonsultanCiptaController@simpan_konsultan_cipta')->name('simpan_konsultan_cipta');
+	Route::post('/admin/konsultan_cipta/ubah', 'KonsultanCiptaController@modal_ubah');
+	Route::post('/admin/konsultan_cipta/simpan/ubah/{id}', 'KonsultanCiptaController@simpan_konsultan_cipta_ubah')->name('simpan_konsultan_cipta_ubah');
+	Route::post('konsultan_cipta/{id}/hapus', 'KonsultanCiptaController@destroy');
+	// END KONSULTAN CIPTA
+
+	// START PENDESAIN 
+	Route::get('/admin/pendesain', 'PendesainController@index')->name('pendesain');
+	Route::post('/admin/pendesain/tambah_modal_pendesain', 'PendesainController@modal_tambah');
+	Route::post('/admin/pendesain/simpan_pendesain', 'PendesainController@simpan_pendesain')->name('simpan_pendesain');
+	Route::post('/admin/pendesain/ubah', 'PendesainController@modal_ubah');
+	Route::post('/admin/pendesain/simpan/ubah/{id}', 'PendesainController@simpan_pendesain_ubah')->name('simpan_pendesain_ubah');
+	Route::post('pendesain/{id}/hapus', 'PendesainController@destroy');
+	// END PENDESAIN
+	
+	// START KELAS LOCARNO 
+	Route::get('/admin/kelas_locarno', 'KelasLocarnoController@index')->name('kelas_locarno');
+	Route::post('/admin/kelas_locarno/tambah_modal_kelas_locarno', 'KelasLocarnoController@modal_tambah');
+	Route::post('/admin/kelas_locarno/simpan_kelas_locarno', 'KelasLocarnoController@simpan_kelas_locarno')->name('simpan_kelas_locarno');
+	Route::post('/admin/kelas_locarno/ubah', 'KelasLocarnoController@modal_ubah');
+	Route::post('/admin/kelas_locarno/simpan/ubah/{id}', 'KelasLocarnoController@simpan_kelas_locarno_ubah')->name('simpan_kelas_locarno_ubah');
+	Route::post('kelas_locarno/{id}/hapus', 'KelasLocarnoController@destroy');
+	// END KELAS LOCARNO
+
+	// START JENIS CIPTAAN 
+	Route::get('/admin/jenis_ciptaan', 'JenisCiptaanController@index')->name('jenis_ciptaan');
+	Route::post('/admin/jenis_ciptaan/tambah_modal_jenis_ciptaan', 'JenisCiptaanController@modal_tambah');
+	Route::post('/admin/jenis_ciptaan/simpan_jenis_ciptaan', 'JenisCiptaanController@simpan_jenis_ciptaan')->name('simpan_jenis_ciptaan');
+	Route::post('/admin/jenis_ciptaan/ubah', 'JenisCiptaanController@modal_ubah');
+	Route::post('/admin/jenis_ciptaan/simpan/ubah/{id}', 'JenisCiptaanController@simpan_jenis_ciptaan_ubah')->name('simpan_jenis_ciptaan_ubah');
+	Route::post('jenis_ciptaan/{id}/hapus', 'JenisCiptaanController@destroy');
+	// END JENIS CIPTAAN
+	
+	// START PEMILIK 
+	Route::get('/admin/pemilik', 'PemilikController@index')->name('pemilik');
+	Route::post('/admin/pemilik/tambah_modal_pemilik', 'PemilikController@modal_tambah');
+	Route::post('/admin/pemilik/simpan_pemilik', 'PemilikController@simpan_pemilik')->name('simpan_pemilik');
+	Route::post('/admin/pemilik/ubah', 'PemilikController@modal_ubah');
+	Route::post('/admin/pemilik/simpan/ubah/{id}', 'PemilikController@simpan_pemilik_ubah')->name('simpan_pemilik_ubah');
+	Route::post('pemilik/{id}/hapus', 'PemilikController@destroy');
+	// END PEMILIK
+
+	// START IPC 
+	Route::post('/admin/ipc_paten/simpan_ipc_paten', 'IpcController@simpan_ipc_paten')->name('simpan_ipc_paten');
+	Route::post('ipc_paten/{id}/hapus', 'IpcController@destroy');
+	// END IPC
+
+	// START PATEN
+	Route::get('/admin/paten', 'PatenController@index')->name('paten');
+	Route::post('/admin/paten/tambah_modal_paten', 'PatenController@modal_tambah');
+	Route::post('/admin/pemilik/simpan_paten', 'PatenController@simpan_paten')->name('simpan_paten');
+	Route::post('/admin/modal_isi_paten/', 'PatenController@modal_isi_paten');
+	Route::post('/admin/{id}/div_tabel_data_prioritas_paten', 'PatenController@div_tabel_data_prioritas_paten');
+	Route::post('/admin/{id}/div_tabel_data_pemegang_paten', 'PatenController@div_tabel_data_pemegang_paten');
+	Route::post('/admin/{id}/div_tabel_data_inventor', 'PatenController@div_tabel_data_inventor');
+	Route::post('/admin/{id}/div_tabel_data_konsultan_paten', 'PatenController@div_tabel_data_konsultan_paten');
+	Route::post('/admin/{id}/div_tabel_data_ipc_paten', 'PatenController@div_tabel_data_ipc_paten'); 
+	Route::post('/admin/{id}/div_tabel_data_upload_paten', 'PatenController@div_tabel_data_upload_paten'); 
+	Route::post('/admin/paten/ubah', 'PatenController@modal_ubah');
+	Route::post('/admin/paten_admin/simpan/ubah/{id}', 'PatenController@simpan_paten_ubah')->name('simpan_paten_ubah');
+	Route::post('paten/{id}/hapus', 'PatenController@destroy');
+	Route::post('/admin/paten/detail', 'PatenController@modal_detail');
+	Route::post('/upload_paten/action', 'PatenController@action')->name('upload_paten.action');
+	Route::post('/admin/data_upload_paten/hapus', 'PatenController@hapus_file_data'); 
+	// END PATEN
+
+	// START MEREK 
+	Route::get('/admin/merek', 'MerekController@index')->name('merek');
+	Route::post('/admin/merek/tambah_modal_merek', 'MerekController@modal_tambah');
+	Route::post('/admin/simpan_merek', 'MerekController@simpan_merek')->name('simpan_merek');
+	Route::post('/admin/merek/ubah', 'MerekController@modal_ubah');
+	Route::post('merek/{id}/hapus', 'MerekController@destroy');
+	Route::post('/admin/merek/simpan/ubah/{id}', 'MerekController@simpan_merek_ubah')->name('simpan_merek_ubah');
+	Route::post('/admin/modal_isi_merek/', 'MerekController@modal_isi_merek');
+	Route::post('/admin/{id}/div_tabel_data_prioritas_merek', 'MerekController@div_tabel_data_prioritas_merek');
+	Route::post('/admin/{id}/div_tabel_data_kelas', 'MerekController@div_tabel_data_kelas');
+	Route::post('/admin/{id}/div_tabel_data_pemilik', 'MerekController@div_tabel_data_pemilik');
+	Route::post('/admin/{id}/div_tabel_data_konsultan_merek', 'MerekController@div_tabel_data_konsultan_merek');
+	Route::post('/upload_merek/action', 'MerekController@action')->name('upload_merek.action');
+	Route::post('/admin/data_upload_merek/hapus', 'MerekController@hapus_file_data'); 
+	Route::post('/admin/{id}/div_tabel_data_upload_merek', 'MerekController@div_tabel_data_upload_merek');
+	Route::post('/admin/merek/detail', 'MerekController@modal_detail'); 
+	// END MEREK
+
+	// START CIPTA
+	Route::get('/admin/cipta', 'CiptaController@index')->name('cipta');
+	Route::post('/admin/cipta/tambah_modal_cipta', 'CiptaController@modal_tambah');
+	Route::post('/admin/simpan_cipta', 'CiptaController@simpan_cipta')->name('simpan_cipta');
+	Route::post('/admin/cipta/ubah', 'CiptaController@modal_ubah');
+	Route::post('cipta/{id}/hapus', 'CiptaController@destroy');
+	Route::post('/admin/cipta_admin/simpan/ubah/{id}', 'CiptaController@simpan_cipta_ubah')->name('simpan_cipta_ubah');
+	Route::post('/admin/{id}/div_tabel_data_pemegang_cipta', 'CiptaController@div_tabel_data_pemegang_cipta');
+	Route::post('/admin/modal_isi_cipta/', 'CiptaController@modal_isi_cipta');
+	Route::post('/admin/{id}/div_tabel_data_jenis_ciptaan', 'CiptaController@div_tabel_data_jenis_ciptaan');
+	Route::post('/admin/{id}/div_tabel_data_pencipta', 'CiptaController@div_tabel_data_pencipta');
+	Route::post('/admin/{id}/div_tabel_data_konsultan_cipta', 'CiptaController@div_tabel_data_konsultan_cipta');
+	Route::post('/upload_cipta/action', 'CiptaController@action')->name('upload_cipta.action');
+	Route::post('/admin/data_upload_cipta/hapus', 'CiptaController@hapus_file_data'); 
+	Route::post('/admin/{id}/div_tabel_data_upload_cipta', 'CiptaController@div_tabel_data_upload_cipta'); 
+	Route::post('/admin/cipta/detail', 'CiptaController@modal_detail');
+	// END CIPTA
+
+	// START DESAIN INDUSTRI
+	Route::get('/admin/desain', 'DesainController@index')->name('desain');
+	Route::post('/admin/desain/tambah_modal_desain', 'DesainController@modal_tambah');
+	Route::post('/admin/simpan_desain', 'DesainController@simpan_desain')->name('simpan_desain');
+	Route::post('/admin/desain/ubah', 'DesainController@modal_ubah');
+	Route::post('desain/{id}/hapus', 'DesainController@destroy');
+	Route::post('/admin/desain/simpan/ubah/{id}', 'DesainController@simpan_desain_ubah')->name('simpan_desain_ubah');
+	Route::post('/admin/{id}/div_tabel_data_kelas_locarno', 'DesainController@div_tabel_data_kelas_locarno');
+	Route::post('/admin/modal_isi_desain/', 'DesainController@modal_isi_desain');
+	Route::post('/admin/{id}/div_tabel_data_prioritas_desain', 'DesainController@div_tabel_data_prioritas_desain'); 
+	Route::post('/admin/{id}/div_tabel_data_pemegang_desain', 'DesainController@div_tabel_data_pemegang_desain'); 
+	Route::post('/admin/{id}/div_tabel_data_pendesain', 'DesainController@div_tabel_data_pendesain'); 
+	Route::post('/admin/{id}/div_tabel_data_konsultan_desain', 'DesainController@div_tabel_data_konsultan_desain');
+	Route::post('/upload_desain/action', 'DesainController@action')->name('upload_desain.action');
+	Route::post('/admin/data_upload_desain/hapus', 'DesainController@hapus_file_data'); 
+	Route::post('/admin/{id}/div_tabel_data_upload_desain', 'DesainController@div_tabel_data_upload_desain'); 
+	Route::post('/admin/desain/detail', 'DesainController@modal_detail');
+	// END DESAIN INDUSTRI
+
+	//START TENTANG KAMI 
+	Route::get('admin/tentang_kami', 'TentangKamiController@index')->name('admin_tentang_kami'); 
+	Route::post('admin/simpan_tentang_kami', 'TentangKamiController@simpan_tentang_kami')->name('simpan_tentang_kami');
+	//END TENTANG KAMI
+
+	// START KONSELING
+	Route::get('admin/konseling', 'KonselingController@index')->name('admin_konseling');
+	Route::post('/admin/konseling/simpan_konseling', 'KonselingController@simpan_konseling')->name('simpan_konseling');
+	Route::get('/admin/detail_konseling','KonselingController@detail')->name('detail_konseling');
+	Route::post('/admin/konseling/simpan_tanggapan', 'KonselingController@simpan_tanggapan')->name('simpan_tanggapan');
+	// END KONSELING
+
+	// START BERITA
+	Route::get('admin/berita', 'BeritaController@index')->name('admin_berita'); 
+	Route::post('/admin/berita/tambah_modal_berita', 'BeritaController@modal_tambah');
+	Route::post('/admin/berita/simpan_berita', 'BeritaController@simpan_berita')->name('simpan_berita');
+	Route::post('/admin/berita/ubah', 'BeritaController@modal_ubah');
+	Route::post('/admin/berita/simpan/ubah/{id}', 'BeritaController@simpan_berita_ubah')->name('simpan_berita_ubah');
+	Route::post('berita/{id}/hapus', 'BeritaController@destroy');
+	// END BERITA
+	
+	// LANDING
+	// START KONSELING
+	Route::get('/landing_konseling', 'PublicController@konseling')->name('landing_konseling');
+	Route::get('/landing_konseling/detail_konseling','PublicController@detail_konseling')->name('landing_detail_konseling');
+	// END KONSELING
+	// START PATEN
+	Route::get('/landing_drafting_paten', 'PublicController@drafting_paten')->name('landing_drafting_paten'); 
+	Route::post('/landing_drafting_paten/simpan_drafting_paten', 'DraftingController@simpan_drafting_paten')->name('simpan_drafting_paten'); 
+	Route::get('/landing_drafting_paten/edit','PublicController@edit_drafting_paten')->name('edit_drafting_paten');
+	Route::post('/admin/paten/simpan/ubah/{id}', 'DraftingController@simpan_drafting_paten_ubah')->name('simpan_drafting_paten_ubah');
+	Route::get('/landing_pembiayaan_paten', 'PublicController@pembiayaan_paten')->name('landing_pembiayaan_paten'); 
+	Route::post('/click/add/list-inventor', 'DraftingController@add_list_inventor');
+	Route::post('/click/add/list-prioritas', 'DraftingController@add_list_prioritas');
+	// END PATEN
+	// START CIPTA 
+	Route::get('/landing_drafting_cipta', 'PublicController@drafting_cipta')->name('landing_drafting_cipta'); 
+	Route::post('/landing_drafting_cipta/simpan_drafting_cipta', 'DraftingController@simpan_drafting_cipta')->name('simpan_drafting_cipta');  
+	Route::get('/landing_drafting_cipta/edit','PublicController@edit_drafting_cipta')->name('edit_drafting_cipta');
+	Route::post('/admin/cipta/simpan/ubah/{id}', 'DraftingController@simpan_cipta_ubah')->name('simpan_drafting_cipta_ubah');
+	Route::post('/landing_drafting_cipta/delete','DraftingController@delete_drafting_cipta')->name('delete_drafting_cipta');
+	Route::post('/landing_page/drafting_cipta/div_jenis_ciptaan','DraftingController@div_jenis_ciptaan');
+	Route::get('/landing_pembiayaan_cipta', 'PublicController@pembiayaan_cipta')->name('landing_pembiayaan_cipta');
+	Route::post('/click/add/list-pencipta', 'DraftingController@add_list_pencipta');
+	Route::post('/click/add/list-pemegang_cipta', 'DraftingController@add_list_pemegang_cipta'); 
+	// END CIPTA
+	// END LANDING
+
+	// START PEMBIAYAAN PATEN
+	Route::get('/admin/paten_belum_biaya', 'PatenController@index_belum_biaya')->name('paten_belum_biaya');
+	Route::get('/admin/paten_belumverif_biaya', 'PatenController@index_belumverif_biaya')->name('paten_belumverif_biaya');
+	Route::get('/admin/paten_sudah_biaya', 'PatenController@index_sudah_biaya')->name('paten_sudah_biaya');
+	Route::post('/admin/verif_tidak_biayai/kirim', 'PatenController@verif_tidak_biayai_kirim')->name('verif_tidak_biaya_kirim');
+	Route::post('/admin/modal_verif_paten_belum_biaya', 'PatenController@modal_verif_paten_belum_biaya')->name('modal_verif_paten_belum_biaya');
+	Route::post('/admin/simpan_verifikasi_paten_pembiayaan', 'PatenController@simpan_verifikasi_paten_pembiayaan')->name('simpan_verifikasi_paten_pembiayaan');
+	// END PEMBIAYAAN PATEN
+
+	// START PEMBIAYAAN CIPTA
+	Route::get('/admin/cipta_belum_biaya', 'CiptaController@index_belum_biaya')->name('cipta_belum_biaya');
+	Route::get('/admin/cipta_belumverif_biaya', 'CiptaController@index_belumverif_biaya')->name('cipta_belumverif_biaya');
+	Route::get('/admin/cipta_sudah_biaya', 'CiptaController@index_sudah_biaya')->name('cipta_sudah_biaya');
+	Route::post('/admin/verif_tidak_biayai/kirim', 'CiptaController@verif_tidak_biayai_kirim')->name('verif_tidak_biaya_kirim');
+	Route::post('/admin/modal_verif_cipta_belum_biaya', 'CiptaController@modal_verif_cipta_belum_biaya')->name('modal_verif_cipta_belum_biaya');
+	Route::post('/admin/simpan_verifikasi_cipta_pembiayaan', 'CiptaController@simpan_verifikasi_cipta_pembiayaan')->name('simpan_verifikasi_cipta_pembiayaan');
+	// END PEMBIAYAAN CIPTA
+
+	// START JENIS BARANG
+	Route::get('/admin/master_jenis_barang', 'JenisBarangController@index')->name('master_jenis_barang');
+	Route::post('/admin/master_jenis_barang/create', 'JenisBarangController@create')->name('modal_master_jenis_barang');Route::post('/admin/master_jenis_barang/simpan_jenis_barang', 'JenisBarangController@store')->name('simpan_jenis_barang');
+	Route::post('/admin/master_jenis_barang/edit', 'JenisBarangController@edit')->name('modal_ubah__master_jenis_barang');Route::post('/admin/simpan_ubah_jenis_barang/{id}', 'JenisBarangController@update')->name('simpan_jenis_barang_ubah');
+	Route::post('master_jenis_barang/{id}/hapus', 'JenisBarangController@destroy');
+	// END JENIS BARANG
+
+	// START JENIS DOKUMENTASI
+	Route::get('/admin/master_jenis_dokumentasi', 'JenisDokumentasiController@index')->name('master_jenis_dokumentasi');
+	Route::post('/admin/master_jenis_dokumentasi/create', 'JenisDokumentasiController@create')->name('modal_master_jenis_dokumentasi');Route::post('/admin/master_jenis_dokumentasi/simpan_jenis_dokumentasi', 'JenisDokumentasiController@store')->name('simpan_jenis_dokumentasi');
+	Route::post('/admin/master_jenis_dokumentasi/edit', 'JenisDokumentasiController@edit')->name('modal_ubah__master_jenis_dokumentasi');Route::post('/admin/simpan_ubah_jenis_dokumentasi/{id}', 'JenisDokumentasiController@update')->name('simpan_jenis_dokumentasi_ubah');
+	Route::post('master_jenis_dokumentasi/{id}/hapus', 'JenisDokumentasiController@destroy');
+	// END JENIS DOKUMENTASI
+
+	// START UPAYA PELESTARIAN
+	Route::get('/admin/master_upaya_pelestarian', 'UpayaPelestarianController@index')->name('master_upaya_pelestarian');
+	Route::post('/admin/master_upaya_pelestarian/create', 'UpayaPelestarianController@create')->name('modal_master_upaya_pelestarian');Route::post('/admin/master_upaya_pelestarian/simpan_upaya_pelestarian', 'UpayaPelestarianController@store')->name('simpan_upaya_pelestarian');
+	Route::post('/admin/master_upaya_pelestarian/edit', 'UpayaPelestarianController@edit')->name('modal_ubah__master_upaya_pelestarian');Route::post('/admin/simpan_ubah_upaya_pelestarian/{id}', 'UpayaPelestarianController@update')->name('simpan_upaya_pelestarian_ubah');
+	Route::post('master_upaya_pelestarian/{id}/hapus', 'UpayaPelestarianController@destroy');
+	// END UPAYA PELESTARIAN
+
+	// START KONDISI
+	Route::get('/admin/master_kondisi', 'KondisiController@index')->name('master_kondisi');
+	Route::post('/admin/master_kondisi/create', 'KondisiController@create')->name('modal_master_kondisi');
+	Route::post('/admin/master_kondisi/simpan_kondisi', 'KondisiController@store')->name('simpan_kondisi');
+	Route::post('/admin/master_kondisi/edit', 'KondisiController@edit')->name('modal_ubah__master_kondisi');
+	Route::post('/admin/simpan_ubah_kondisi/{id}', 'KondisiController@update')->name('simpan_kondisi_ubah');
+	Route::post('master_kondisi/{id}/hapus', 'KondisiController@destroy');
+	// END KONDISI
+
+	// START SLIDERS
+	Route::get('/admin/sliders', 'SlidersController@index')->name('sliders');
+	Route::post('/admin/sliders/ubah', 'SlidersController@modal_ubah_sliders')->name('ubah_sliders');
+	Route::post('/admin/sliders/simpan/ubah/{id}', 'SlidersController@simpan_sliders_ubah')->name('simpan_sliders_ubah');
+	// END SLIDERS
+
+	// START KI KOMUNAL
+	Route::get('/landing_drafting_komunal', 'KiKomunalController@drafting_komunal')->name('landing_drafting_komunal');  
+	Route::post('/landing_drafting_komunal/simpan_drafting_komunal', 'KiKomunalController@store')->name('simpan_drafting_komunal'); 
+	Route::get('/landing_pembiayaan_ki_komunal', 'KiKomunalController@pembiayaan_ki_komunal')->name('landing_pembiayaan_ki_komunal'); 
+
+	// END KI KOMUNAL
+
+	// START ADMIN KI KOMUNAL
+	
+	// START PEMBIAYAAN KI KOMUNAL
+	Route::get('/admin/ki_komunal_belum_biaya', 'KiKomunalController@index_belum_biaya')->name('ki_komunal_belum_biaya');
+	Route::get('/admin/ki_komunal_belumverif_biaya', 'KiKomunalController@index_belum_verif_biaya')->name('ki_komunal_belumverif_biaya');
+	Route::get('/admin/ki_komunal_sudah_biaya', 'KiKomunalController@index_sudah_biaya')->name('ki_komunal_sudah_biaya');
+	Route::post('/admin/ki_komunal/verif_tidak_biayai/kirim', 'KiKomunalController@verif_tidak_biayai_kirim')->name('verif_tidak_biaya_kirim');
+	Route::post('/admin/modal_verif_ki_komunal_belum_biaya', 'KiKomunalController@modal_verif_ki_komunal_belum_biaya')->name('modal_verif_ki_komunal_belum_biaya');
+	Route::post('/admin/simpan_verifikasi_ki_komunal_pembiayaan', 'KiKomunalController@simpan_verifikasi_ki_komunal_pembiayaan')->name('simpan_verifikasi_ki_komunal_pembiayaan');
+	Route::post('/admin/ki_komunal/detail', 'KiKomunalController@modal_detail');
+	Route::post('admin/ki_komunal/{id}/hapus', 'KiKomunalController@destroy');
+
+Route::get('/', function () {
+    return view('welcome');
+});

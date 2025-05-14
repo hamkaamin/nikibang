@@ -1,0 +1,15 @@
+NOTE INSTALL PYTHON (DJANGO)
+1. MASUK WEB PYTHON INSTALL PYTHON VERSI TERBARU
+2. BUAT FOLDER UNTUK PROJEK DJANGO
+3. UPGRADE PIP LIST TERBARU = python -m pip install --upgrade pip
+4. INSTALL ENV (VIRTUAL ENVIRONMENT) = python -m venv Env
+5. aktifkan virtual environment, masuk CMD : Env\Scripts\activate.bat
+6. UPGRADE PIP LIST TERBARU LAGI = python -m pip install --upgrade pip
+7. INSTALL DJANGO  = pip install Django==1.11.*
+8. START PROJEK = django-admin startproject mywebsite
+9. masuk ke directory django-project, buat apps baru dengan nama blog : python manage.py startapp blog
+10. masuk ke settings.py tambahkan blog di INSTALLED APPS, dan 'templates' di DIR TEMPLATES
+11. bat folder 'templates' di django-project, dan blog 
+NOTE BELAJAR DJANGO
+1. views.py  = controller
+2. urls.py = web.php
